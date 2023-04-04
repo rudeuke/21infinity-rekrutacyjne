@@ -1,6 +1,4 @@
-﻿using _21infinity_rekrutacja_core.Models;
-
-namespace _21infinity_rekrutacja_core.Miscellaneous
+﻿namespace _21infinity_rekrutacja_core.Miscellaneous
 {
     public static class MyHelper
     {
