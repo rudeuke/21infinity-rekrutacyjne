@@ -17,3 +17,7 @@ Lista treningów:
 - Podstawy Excela
 
 ---
+
+### Zadanie 2
+
+Podaj nazwy użytkowników, którzy odpowiedzieli poprawnie na co najmniej 50% pytań dodanych przez użytkownika Jan Kowalski (Owner).

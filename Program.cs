@@ -7,6 +7,8 @@ namespace _21infinity_rekrutacyjne
         static void Main(string[] args)
         {
             RecruitmentTasks.Z1();
+            Console.WriteLine("----------------------------------------");
+            RecruitmentTasks.Z2();
         }
     }
 }

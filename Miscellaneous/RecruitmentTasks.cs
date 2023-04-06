@@ -12,5 +12,16 @@
                 Console.WriteLine(user.UserName);
             }
         }
+
+        public static void Z2()
+        {
+            Console.WriteLine("Zadanie 2:");
+
+            var users = Utilities.GetZ2Users();
+            foreach (var user in users)
+            {
+                Console.WriteLine(user.UserName);
+            }
+        }
     }
 }

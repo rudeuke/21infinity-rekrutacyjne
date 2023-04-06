@@ -12,4 +12,6 @@ public partial class UserAccount
     public ICollection<Answer>? Answers { get; set; }
 
     public ICollection<Enrollment>? Enrollments { get; set; }
+
+    public ICollection<Training>? Trainings { get; set; }
 }
