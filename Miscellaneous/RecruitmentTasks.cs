@@ -23,5 +23,16 @@
                 Console.WriteLine(user.UserName);
             }
         }
+
+        public static void Z3()
+        {
+            Console.WriteLine("Zadanie 3:");
+
+            var trainings = Utilities.GetZ3Trainings();
+            foreach (var training in trainings)
+            {
+                Console.WriteLine(training.Name);
+            }
+        }
     }
 }

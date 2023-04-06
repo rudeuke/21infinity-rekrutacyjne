@@ -18,7 +18,7 @@ public partial class Enrollment
 
     public Training? Training { get; set; }
 
-    public DateOnly AvailableFrom { get; set; }
+    public DateTime AvailableFrom { get; set; }
 
-    public DateOnly AvailableTo { get; set; }
+    public DateTime AvailableTo { get; set; }
 }

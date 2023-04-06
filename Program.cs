@@ -9,6 +9,8 @@ namespace _21infinity_rekrutacyjne
             RecruitmentTasks.Z1();
             Console.WriteLine("----------------------------------------");
             RecruitmentTasks.Z2();
+            Console.WriteLine("----------------------------------------");
+            RecruitmentTasks.Z3();
         }
     }
 }

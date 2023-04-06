@@ -31,10 +31,24 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
                 var userAnswers = answersToJKQuestions.GroupBy(a => a.UserAccount).Select(a => new { User = a.Key, AllAnswers = a.Count(), CorrectAnswers = a.Where(a => a.IsCorrect).Count() });
 
                 var usersOver50p = userAnswers.Where(u => (double)u.CorrectAnswers / u.AllAnswers >= 0.5).Select(a => new { a.User, a.AllAnswers, a.CorrectAnswers });
-                
-                var users=db.UserAccounts.Where(u => usersOver50p.Any(uo => uo.User == u));
+
+                var users = db.UserAccounts.Where(u => usersOver50p.Any(uo => uo.User == u));
 
                 return users.ToList();
+            }
+        }
+
+        public static List<Training> GetZ3Trainings()
+        {
+            using (var db = new DatabaseContext())
+            {
+                var enrollmentsOverdue = db.Enrollments.Where(e => e.AvailableTo < DateTime.Now);
+
+                var questionsWithoutCorrectAnswers = db.Questions.Where(q => q.Answers.Any(a => !a.IsCorrect));
+
+                var trainings = enrollmentsOverdue.Select(e => e.Training).Intersect(questionsWithoutCorrectAnswers.Select(q => q.Training));
+
+                return trainings.ToList();
             }
         }
     }
