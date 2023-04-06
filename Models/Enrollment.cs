@@ -1,14 +1,24 @@
-﻿namespace _21infinity_rekrutacja_core.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace _21infinity_rekrutacja_core.Models;
 
 public partial class Enrollment
 {
+    [Key]
     public long Id { get; set; }
 
-    public long? UserId { get; set; }
+    [ForeignKey(nameof(UserAccount))]
+    public long UserId { get; set; }
 
-    public long? TrainingId { get; set; }
+    public UserAccount? UserAccount { get; set; }
 
-    public byte[]? AvailableFrom { get; set; }
+    [ForeignKey(nameof(Training))]
+    public long TrainingId { get; set; }
 
-    public byte[]? AvailableTo { get; set; }
+    public Training? Training { get; set; }
+
+    public DateOnly AvailableFrom { get; set; }
+
+    public DateOnly AvailableTo { get; set; }
 }

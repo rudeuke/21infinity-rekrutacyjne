@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _21infinity_rekrutacja_core.Miscellaneous;
 
-public partial class DataContext : DbContext
+public partial class DatabaseContext : DbContext
 {
-    public DataContext()
+    public DatabaseContext()
     {
     }
 
-    public DataContext(DbContextOptions<DataContext> options)
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
     {
     }
@@ -25,7 +25,10 @@ public partial class DataContext : DbContext
     public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=D:/SQLiteStudio/_db/Data.db");
+    {
+        var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        optionsBuilder.UseSqlite($"Data Source={projectPath}/Database.db;");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

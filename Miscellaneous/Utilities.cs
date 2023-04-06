@@ -6,7 +6,7 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
     {
         public static List<UserAccount> GetZ1Users()
         {
-            using (var db = new DataContext())
+            using (var db = new DatabaseContext())
             {
                 var excludedTrainingNames = new List<string> { "BHP", "Kurs zarządzania", "Podstawy Excela" };
 
