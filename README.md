@@ -21,3 +21,9 @@ Lista treningów:
 ### Zadanie 2
 
 Podaj nazwy użytkowników, którzy odpowiedzieli poprawnie na co najmniej 50% pytań dodanych przez użytkownika Jan Kowalski (Owner).
+
+---
+
+### Zadanie 3
+
+Podaj nazwy treningów, dla których czas wykonania minął oraz nikt nie podał poprawnej odpowiedzi na żadne z pytań.
