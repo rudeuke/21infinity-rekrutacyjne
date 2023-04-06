@@ -8,14 +8,11 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
         {
             using (var db = new DatabaseContext())
             {
-                var excludedTrainingNames = new List<string> { "BHP", "Kurs zarządzania", "Podstawy Excela" };
+                var excludedTrainingNames = new[] { "BHP", "Kurs zarządzania", "Podstawy Excela" };
 
                 var trainingsExcluded = db.Trainings.Where(t => excludedTrainingNames.Contains(t.Name));
 
-                var excludedUsers = db.Enrollments
-                    .Join(trainingsExcluded, Enrollment => Enrollment.TrainingId, Training => Training.Id, (Enrollment, Training) => new { Enrollment, Training })
-                    .Join(db.UserAccounts, join1 => join1.Enrollment.UserId, UserAccount => UserAccount.Id, (join1, UserAccount) => new { UserAccount })
-                    .Select(u => u.UserAccount);
+                var excludedUsers = db.UserAccounts.Where(u => u.Enrollments.Any(e => trainingsExcluded.Contains(e.Training)));
 
                 var users = db.UserAccounts.Except(excludedUsers);
 
