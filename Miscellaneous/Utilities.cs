@@ -10,13 +10,9 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
             {
                 var excludedTrainingNames = new[] { "BHP", "Kurs zarządzania", "Podstawy Excela" };
 
-                var trainingsExcluded = db.Trainings.Where(t => excludedTrainingNames.Contains(t.Name));
-
-                var excludedUsers = db.UserAccounts.Where(u => u.Enrollments.Any(e => trainingsExcluded.Contains(e.Training)));
-
-                var users = db.UserAccounts.Except(excludedUsers);
-
-                return users.ToList();
+                return db.UserAccounts
+                    .Where(u => !u.Enrollments.Any(e => excludedTrainingNames.Contains(e.Training.Name)))
+                    .ToList();
             }
         }
 
@@ -24,17 +20,11 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
         {
             using (var db = new DatabaseContext())
             {
-                var questionsAddedByJK = db.Questions.Where(q => q.Training.Owner.UserName == "Jan Kowalski");
+                var ownerUserName = "Jan Kowalski";
 
-                var answersToJKQuestions = db.Answers.Where(a => questionsAddedByJK.Contains(a.Question));
-
-                var userAnswers = answersToJKQuestions.GroupBy(a => a.UserAccount).Select(a => new { User = a.Key, AllAnswers = a.Count(), CorrectAnswers = a.Where(a => a.IsCorrect).Count() });
-
-                var usersOver50p = userAnswers.Where(u => (double)u.CorrectAnswers / u.AllAnswers >= 0.5).Select(a => new { a.User, a.AllAnswers, a.CorrectAnswers });
-
-                var users = db.UserAccounts.Where(u => usersOver50p.Any(uo => uo.User == u));
-
-                return users.ToList();
+                return db.UserAccounts
+                    .Where(u => u.Answers.Count(a => a.Question.Training.Owner.UserName.Equals(ownerUserName)) > 0 && (double)u.Answers.Count(a => a.IsCorrect && a.Question.Training.Owner.UserName.Equals(ownerUserName)) / u.Answers.Count(a => a.Question.Training.Owner.UserName.Equals(ownerUserName)) >= 0.5)
+                    .ToList();
             }
         }
 
@@ -42,13 +32,9 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
         {
             using (var db = new DatabaseContext())
             {
-                var enrollmentsOverdue = db.Enrollments.Where(e => e.AvailableTo < DateTime.Now);
-
-                var questionsWithoutCorrectAnswers = db.Questions.Where(q => q.Answers.Any(a => !a.IsCorrect));
-
-                var trainings = enrollmentsOverdue.Select(e => e.Training).Intersect(questionsWithoutCorrectAnswers.Select(q => q.Training));
-
-                return trainings.ToList();
+                return db.Trainings
+                    .Where(t => t.Enrollments.Any(e => e.AvailableTo < DateTime.Now) && !t.Questions.Any(q => q.Answers.Any(a => a.IsCorrect)))
+                    .ToList();
             }
         }
     }
