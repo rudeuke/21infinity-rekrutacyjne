@@ -11,7 +11,8 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
                 var excludedTrainingNames = new[] { "BHP", "Kurs zarządzania", "Podstawy Excela" };
 
                 return db.UserAccounts
-                    .Where(u => !u.Enrollments.Any(e => excludedTrainingNames.Contains(e.Training.Name)))
+                    .Where(u =>
+                        !u.Enrollments.Any(e => excludedTrainingNames.Contains(e.Training.Name)))
                     .ToList();
             }
         }
@@ -23,7 +24,10 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
                 var ownerUserName = "Jan Kowalski";
 
                 return db.UserAccounts
-                    .Where(u => u.Answers.Count(a => a.Question.Training.Owner.UserName.Equals(ownerUserName)) > 0 && (double)u.Answers.Count(a => a.IsCorrect && a.Question.Training.Owner.UserName.Equals(ownerUserName)) / u.Answers.Count(a => a.Question.Training.Owner.UserName.Equals(ownerUserName)) >= 0.5)
+                    .Where(u =>
+                        u.Answers.Any(a => a.Question.Training.Owner.UserName == ownerUserName)
+                            && (double)u.Answers.Count(a => a.IsCorrect && a.Question.Training.Owner.UserName == ownerUserName) /
+                            u.Answers.Count(a => a.Question.Training.Owner.UserName == ownerUserName) >= 0.5)
                     .ToList();
             }
         }
@@ -33,7 +37,9 @@ namespace _21infinity_rekrutacja_core.Miscellaneous
             using (var db = new DatabaseContext())
             {
                 return db.Trainings
-                    .Where(t => t.Enrollments.Any(e => e.AvailableTo < DateTime.Now) && !t.Questions.Any(q => q.Answers.Any(a => a.IsCorrect)))
+                    .Where(t =>
+                        !t.Enrollments.Any(e => e.AvailableTo > DateTime.Now)
+                        && !t.Questions.Any(q => q.Answers.Any(a => a.IsCorrect)))
                     .ToList();
             }
         }
